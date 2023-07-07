@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/markdown-css.css"> <!-- 引入自定义CSS文件 -->
+    <link rel="stylesheet" href="./css/color-brewer.min.css">
+
+    <style>
+    /* 可选：为代码块添加样式 */
+    pre code {
+        display: block;
+        padding: 10px;
+        background-color: #386310;
+    }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/marked.js"></script>
+    <script src="./js/highlight.js"></script>
+    <script>
+        axios.get('/Posts/SVM-Iris Classification.md')  //自定义md文件
+            .then(function(response) {
+                var markdownText = response.data;
+                var htmlText = marked(markdownText);
+                var contentElement = document.getElementById("content");
+                contentElement.innerHTML = htmlText;
+                // 使用 Highlight.js 对代码块进行高亮显示
+                var codeBlocks = contentElement.getElementsByTagName("code");
+                for (var i = 0; i < codeBlocks.length; i++) {
+                    hljs.highlightBlock(codeBlocks[i]);
+                }
+            })
+            .catch(function(error) {
+                console.log('Failed to load Markdown file.', error);
+            });
+    </script>
+</body>
+</html>
